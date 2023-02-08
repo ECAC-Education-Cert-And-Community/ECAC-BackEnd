@@ -1,0 +1,30 @@
+{
+  "name": "ecac-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./Post",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ECAC-Education-Cert-And-Community/ECAC-BackEnd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ECAC-Education-Cert-And-Community/ECAC-BackEnd/issues"
+  },
+  "homepage": "https://github.com/ECAC-Education-Cert-And-Community/ECAC-BackEnd#readme",
+  "dependencies": {
+    "@prisma/client": "^4.9.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "nunjucks": "^3.2.3"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "prisma": "^4.9.0"
+  }
+}
