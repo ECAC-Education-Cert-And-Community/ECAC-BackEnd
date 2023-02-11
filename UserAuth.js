@@ -66,3 +66,31 @@ app.post('/register', async (req, res) => {
         res.status(500).send({ error: 'Server Error' });
     }
 });
+
+// 로그인 api
+app.post('/login',async(req,res)=>{
+    try {
+        const userEmail = req.body.userEmail; // 로그인 아이디가 userEmail 
+        const userPW = req.body.userPW;
+
+        const user = await prisma.users.findUnique({
+            where: {
+                userEmail : userEmail
+            },
+        });
+        if (!user) {
+            return res.status(400).send({ error: 'Wrong ID, you need to register.' });
+        }
+        else {
+            const isEqualPw = await bcrypt.compare(userPW,user.userPW);
+            if(isEqualPw)
+               return res.send({ message: 'Login Suceed.' , user});
+            else
+                return res.status(404).send({ error: 'Wrong Password.' });
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Server Error.' });
+    }
+});
