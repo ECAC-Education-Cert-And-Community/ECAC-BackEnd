@@ -40,34 +40,38 @@ app.post('/register', async (req, res) => {
         const update = req.body.update;
         const pointStatus = req.body.pointStatus;
 
-        const userExist = await prisma.users.findUnique({
-            where: {
-                userEmail: userEmail
-            },
-        });
-
-        if (userExist) {
-            res.send({ message: 'Email already exists.' })
+        if (!serviceAgree) {
+            res.send({ message: 'You cannot sign up unless you agree to the terms and conditions.' })
         } else {
-            await prisma.users.create({
-                data: {
-                    userId: userId,
-                    userName: userName,
-                    department: department,
-                    userNick: userNick,
-                    userEmail: userEmail,
-                    userPW: userPW,
-                    userPhoneNum: userPhoneNum,
-                    profileImagePath: profileImagePath,
-                    userRole: userRole,
-                    activityNum: activityNum,
-                    serviceAgree: serviceAgree,
-                    regDate: regDate,
-                    update: update,
-                    pointStatus: pointStatus
+            const userExist = await prisma.users.findUnique({
+                where: {
+                    userEmail: userEmail
                 },
-            })
-            res.send({ message: 'Saved Succesfully' })
+            });
+
+            if (userExist) {
+                res.send({ message: 'Email already exists.' })
+            } else {
+                await prisma.users.create({
+                    data: {
+                        userId: userId,
+                        userName: userName,
+                        department: department,
+                        userNick: userNick,
+                        userEmail: userEmail,
+                        userPW: userPW,
+                        userPhoneNum: userPhoneNum,
+                        profileImagePath: profileImagePath,
+                        userRole: userRole,
+                        activityNum: activityNum,
+                        serviceAgree: serviceAgree,
+                        regDate: regDate,
+                        update: update,
+                        pointStatus: pointStatus
+                    },
+                })
+                res.send({ message: 'Saved Succesfully' })
+            }
         }
     }
     catch (error) {
