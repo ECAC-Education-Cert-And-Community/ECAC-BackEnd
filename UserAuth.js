@@ -40,26 +40,39 @@ app.post('/register', async (req, res) => {
         const update = req.body.update;
         const pointStatus = req.body.pointStatus;
 
+        if (!serviceAgree) {
+            res.send({ message: 'You cannot sign up unless you agree to the terms and conditions.' })
+        } else {
+            const userExist = await prisma.users.findUnique({
+                where: {
+                    userEmail: userEmail
+                },
+            });
 
-        await prisma.users.create({
-            data: {
-                userId: userId,
-                userName: userName,
-                department: department,
-                userNick: userNick,
-                userEmail: userEmail,
-                userPW: userPW,
-                userPhoneNum: userPhoneNum,
-                profileImagePath: profileImagePath,
-                userRole: userRole,
-                activityNum: activityNum,
-                serviceAgree: serviceAgree,
-                regDate: regDate,
-                update: update,
-                pointStatus: pointStatus
-            },
-        })
-        res.send({ message: 'Saved Succesfully' })
+            if (userExist) {
+                res.send({ message: 'Email already exists.' })
+            } else {
+                await prisma.users.create({
+                    data: {
+                        userId: userId,
+                        userName: userName,
+                        department: department,
+                        userNick: userNick,
+                        userEmail: userEmail,
+                        userPW: userPW,
+                        userPhoneNum: userPhoneNum,
+                        profileImagePath: profileImagePath,
+                        userRole: userRole,
+                        activityNum: activityNum,
+                        serviceAgree: serviceAgree,
+                        regDate: regDate,
+                        update: update,
+                        pointStatus: pointStatus
+                    },
+                })
+                res.send({ message: 'Saved Succesfully' })
+            }
+        }
     }
     catch (error) {
         console.error(error);
@@ -68,23 +81,23 @@ app.post('/register', async (req, res) => {
 });
 
 // 로그인 api
-app.post('/login',async(req,res)=>{
+app.post('/login', async (req, res) => {
     try {
         const userEmail = req.body.userEmail; // 로그인 아이디가 userEmail 
         const userPW = req.body.userPW;
 
         const user = await prisma.users.findUnique({
             where: {
-                userEmail : userEmail
+                userEmail: userEmail
             },
         });
         if (!user) {
             return res.status(400).send({ error: 'Wrong ID, you need to register.' });
         }
         else {
-            const isEqualPw = await bcrypt.compare(userPW,user.userPW);
-            if(isEqualPw)
-               return res.send({ message: 'Login Suceed.' , user});
+            const isEqualPw = await bcrypt.compare(userPW, user.userPW);
+            if (isEqualPw)
+                return res.send({ message: 'Login Suceed.', user });
             else
                 return res.status(404).send({ error: 'Wrong Password.' });
         }
