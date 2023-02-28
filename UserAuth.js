@@ -25,7 +25,7 @@ const bcrypt = require('bcrypt')
 app.post('/register', async (req, res) => {
     try {
         // 파라미터 받아오기
-        const userId = req.body.userId;
+        // const userId = req.body.userId;
         const userName = req.body.userName;
         const department = req.body.department;
         const userNick = req.body.userNick;
@@ -54,7 +54,6 @@ app.post('/register', async (req, res) => {
             } else {
                 await prisma.users.create({
                     data: {
-                        userId: userId,
                         userName: userName,
                         department: department,
                         userNick: userNick,
@@ -106,4 +105,38 @@ app.post('/login', async (req, res) => {
         console.error(error);
         res.status(500).send({ error: 'Server Error.' });
     }
+});
+
+// 회원정보 수정 api
+app.put('/edit', async (req, res) => {
+
+    try {
+        // 파라미터 받아오기
+        const userId = req.body.userId; // 자동으로 받아오는 것으로 수정 필요
+        const userName = req.body.userName;
+        const department = req.body.department;
+        const userNick = req.body.userNick;
+        const userPhoneNum = req.body.userPhoneNum;
+        const profileImagePath = req.body.profileImagePath;
+        const update = req.body.update;
+
+        const user = await prisma.users.update({
+            where: {
+                userId: userId
+            },
+            data: {
+                userName: userName,
+                department: department,
+                userNick: userNick,
+                userPhoneNum: userPhoneNum,
+                profileImagePath: profileImagePath,
+                update: update
+            }
+        })
+        res.send(user);
+    }
+    catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Server Error' });
+}
 });
