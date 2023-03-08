@@ -38,3 +38,9 @@ model Posts {
   postViews   BigInt
   postLikes   BigInt
 }
+
+model PostInterest {
+  collectId BigInt @unique @default(autoincrement())
+  userId BigInt
+  postId BigInt
+}

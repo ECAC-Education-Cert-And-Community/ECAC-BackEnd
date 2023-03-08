@@ -182,9 +182,54 @@ app.post('/post/read/:id/like', async (req, res) => {
 });
 
 // 스크랩 api
-// app.post('/post/read/:id/scrap', async (req, res) => {
-    
-//     const postId = Number(req.params.id)
-//     const userId = req.user.id;
+app.post('/post/read/:id/scrap', async (req, res) => {
+    try {
+        const postId = Number(req.params.id)
+        const userId = req.user.id;
 
-// });
+        await prisma.posts.create({
+            data: {
+                userId: userId,
+                postId: postId
+            },
+        })
+        res.send({ message: 'Scrap Success.' })
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Server Error' });
+    }
+});
+
+// 스크랩 모아보기 api
+app.get('/post/read/scrap', async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const postInterest= await prisma.postInterest.findMany({
+            where: {
+                userId: userId,
+            },
+            select: {
+                postId: true
+            }
+        })
+
+        const postList = await prisma.posts.findMany({
+            where: {
+                postId: postInterest
+            },
+            select: {
+                postId: true,
+                userId: true,
+                postTitle: true,
+                publishDate: true
+            }
+        });
+        res.send(postList)
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Server Error.' });
+    }
+});
