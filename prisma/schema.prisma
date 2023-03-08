@@ -38,3 +38,11 @@ model Posts {
   postViews   BigInt
   postLikes   BigInt
 }
+
+model Activity {
+  activityId      BigInt    @unique @default(autoincrement())
+  userId          BigInt
+  activityName    String?   @db.VarChar(300)
+  activityPeriod  String?   @db.VarChar(300)
+  certification   Boolean   @db.Bit(1)
+}
