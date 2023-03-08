@@ -180,3 +180,11 @@ app.post('/post/read/:id/like', async (req, res) => {
         res.status(500).send({ error: 'Server Error.' });
     }
 });
+
+// 스크랩 api
+// app.post('/post/read/:id/scrap', async (req, res) => {
+    
+//     const postId = Number(req.params.id)
+//     const userId = req.user.id;
+
+// });
