@@ -187,14 +187,25 @@ app.post('/post/read/:id/scrap', async (req, res) => {
         const postId = Number(req.params.id)
         // const userId = req.user.id;
         const userId = req.body.userId;
-
-        await prisma.postInterest.create({
-            data: {
-                userId: userId,
-                postId: postId
-            },
+        
+        const scrapExist = await prisma.postInterest.findFirst({
+            where: {
+                userId : userId,
+                postId : postId
+              }
         })
-        res.send({ message: 'Scrap Success.' })
+
+        if (scrapExist != null) {
+            res.send({ message: 'Alreay in Scrap list' })
+        } else {
+            await prisma.postInterest.create({
+                data: {
+                    userId: userId,
+                    postId: postId
+                },
+            })
+            res.send({ message: 'Scrap Success.' })
+        }
     }
     catch (error) {
         console.error(error);
@@ -203,35 +214,36 @@ app.post('/post/read/:id/scrap', async (req, res) => {
 });
 
 // 스크랩 모아보기 api
-app.get('/post/read/scrap', async (req, res) => {
+app.get('/post/scrap', async (req, res) => {
     try {
-        // const userId = req.user.id;
-        const userId = req.body.userId;
-
-        const postInterest= await prisma.postInterest.findMany({
-            where: {
-                userId: userId,
-            },
-            select: {
-                postId: true
-            }
-        })
-
-        const postList = await prisma.posts.findMany({
-            where: {
-                postId: postInterest
-            },
-            select: {
-                postId: true,
-                userId: true,
-                postTitle: true,
-                publishDate: true
-            }
-        });
-        res.send(postList)
+      const userId = req.body.userId;
+      
+      const postInterest = await prisma.postInterest.findMany({
+        where: {
+          userId: userId,
+        },
+        select: {
+          postId: true,
+        },
+      });
+    //   res.send(postInterest);
+      const postList = await prisma.posts.findMany({
+        where: {
+          OR: postInterest.map((interest) => ({
+            postId: interest.postId,
+          })),
+        },
+        select: {
+          postId: true,
+          userId: true,
+          postTitle: true,
+          publishDate: true,
+        },
+      });
+      res.send(postList);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: 'Server Error.' });
     }
-    catch (error) {
-        console.error(error);
-        res.status(500).send({ error: 'Server Error.' });
-    }
-});
+  });
+  
