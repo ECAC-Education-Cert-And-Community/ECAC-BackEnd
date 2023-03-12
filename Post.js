@@ -185,9 +185,10 @@ app.post('/post/read/:id/like', async (req, res) => {
 app.post('/post/read/:id/scrap', async (req, res) => {
     try {
         const postId = Number(req.params.id)
-        const userId = req.user.id;
+        // const userId = req.user.id;
+        const userId = req.body.userId;
 
-        await prisma.posts.create({
+        await prisma.postInterest.create({
             data: {
                 userId: userId,
                 postId: postId
@@ -204,7 +205,8 @@ app.post('/post/read/:id/scrap', async (req, res) => {
 // 스크랩 모아보기 api
 app.get('/post/read/scrap', async (req, res) => {
     try {
-        const userId = req.user.id;
+        // const userId = req.user.id;
+        const userId = req.body.userId;
 
         const postInterest= await prisma.postInterest.findMany({
             where: {
