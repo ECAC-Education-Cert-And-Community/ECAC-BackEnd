@@ -165,7 +165,7 @@ app.post('/post/read/:id/like', async (req, res) => {
                 postId: postId,
             },
         })
-        const postLikes = postRes.postLikes + 1n
+        const postLikes = postRes.postLikes + 1
         await prisma.posts.update({
             where: {
                 postId: postId,
