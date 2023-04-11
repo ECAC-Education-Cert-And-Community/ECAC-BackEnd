@@ -196,7 +196,7 @@ app.post('/post/read/:id/scrap', async (req, res) => {
         })
 
         if (scrapExist != null) {
-            res.send({ message: 'Alreay in Scrap list' })
+            res.send({ message: 'Already in Scrap list' })
         } else {
             await prisma.postInterest.create({
                 data: {
