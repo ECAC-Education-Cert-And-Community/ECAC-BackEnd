@@ -29,8 +29,8 @@ app.post('/post', /*authenticateAccessToken,*/ async (req, res) => {
         const imagePath = req.body.imagePath;
         const publishDate = req.body.publishDate;
         const tag = req.body.tag;
-        const postViews = req.body.postViews;
-        const postLikes = req.body.postLikes;
+        const postViews = 0;
+        const postLikes = 0;
         //const datas = [name, title, content, passwd]; // 모든 데이터의 배열
 
         await prisma.posts.create({
