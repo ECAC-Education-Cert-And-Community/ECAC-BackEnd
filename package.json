@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./Post.js && nodemon ./UserAuth.js && nodemon ./Search.js && nodemon ./Activity.js",
+    "start": "nodemon ./Post.js & nodemon ./UserAuth.js & nodemon ./Search.js & nodemon ./Activity.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
