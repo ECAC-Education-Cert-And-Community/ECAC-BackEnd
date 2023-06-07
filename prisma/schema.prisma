@@ -54,3 +54,11 @@ model Activity {
   activityPeriod  String?   @db.VarChar(300)
   certification   Boolean   @db.Bit(1)
 }
+
+model Inquiry {
+  inquiryId      BigInt    @unique @default(autoincrement())
+  userId         BigInt
+  inquiryTitle   String?   @db.VarChar(200)
+  inquiryContent String    @db.VarChar(500)
+  publishDate    DateTime  @default(now())
+}

@@ -47,3 +47,28 @@ app.get('/mypage', async (req, res) => {
     res.status(500).send({ error: 'Server Error' });
 }
 });
+
+// 문의사항 api
+app.post('/inquiry', /*authenticateAccessToken,*/ async (req, res) => {
+    try {
+        // 파라미터 받아오기
+        const userId = req.body.userId;
+        const inquiryTitle = req.body.inquiryTitle;
+        const inquiryContent = req.body.inquiryContent;
+        const publishDate = req.body.publishDate;
+
+        await prisma.Inquiry.create({
+            data: {
+                userId: userId,
+                inquiryTitle: inquiryTitle,
+                inquiryContent: inquiryContent,
+                publishDate: publishDate,
+            },
+        })
+        res.send({ message: 'Saved Succesfully' })
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Server Error' });
+    }
+});
