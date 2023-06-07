@@ -25,6 +25,8 @@ model Users {
   regDate          DateTime  @default(now())
   update           DateTime  @default(now())
   pointStatus      BigInt? 
+  userLikes        BigInt?
+  userComments     BigInt?
 }
 
 model Posts {

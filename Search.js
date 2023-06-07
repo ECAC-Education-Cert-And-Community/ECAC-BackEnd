@@ -19,7 +19,7 @@ BigInt.prototype.toJSON = function () {
 }
 
 // 검색 API
-app.get('/search', async (req, res) => {
+app.get('/post/search', async (req, res) => {
     try {
         const search = req.query.search;
         // 띄어쓰기 무시

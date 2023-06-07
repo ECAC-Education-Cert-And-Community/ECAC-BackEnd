@@ -160,6 +160,7 @@ app.delete('/post/:id', /*authenticateAccessToken,*/ async (req, res) => {
 app.post('/post/read/:id/like', async (req, res) => {
     try {
         const postId = Number(req.params.id)
+        const userId = req.body.userId;
         const postRes = await prisma.posts.findUnique({
             where: {
                 postId: postId,
@@ -169,6 +170,14 @@ app.post('/post/read/:id/like', async (req, res) => {
         await prisma.posts.update({
             where: {
                 postId: postId,
+            },
+            data: {
+                postLikes: postLikes
+            }
+        });
+        await prisma.users.update({
+            where: {
+                userId: userId,
             },
             data: {
                 postLikes: postLikes
