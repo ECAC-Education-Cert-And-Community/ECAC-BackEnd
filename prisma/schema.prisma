@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model users {
   userId           BigInt    @id @default(autoincrement())
   userName         String    @db.VarChar(10)
   department       String    @db.VarChar(20)
@@ -19,17 +19,16 @@ model Users {
   userPW           String    @db.VarChar(100)
   userPhoneNum     String    @db.VarChar(12)
   profileImagePath String?   @db.VarChar(200)
-  userRole         Boolean    @db.Bit(1)
+  userRole         Boolean   @db.Bit(1)
   activityNum      BigInt?
   serviceAgree     Boolean   @db.Bit(1)
   regDate          DateTime  @default(now())
-  update           DateTime  @default(now())
+  updateDate       DateTime  @default(now())
   pointStatus      BigInt? 
-  userLikes        BigInt?
-  userComments     BigInt?
+  //comment          comments[]
 }
 
-model Posts {
+model posts {
   postId      BigInt    @unique @default(autoincrement())
   userId      BigInt
   postTitle   String?   @db.VarChar(200)
@@ -39,15 +38,16 @@ model Posts {
   tag         String    @db.VarChar(100)
   postViews   BigInt
   postLikes   BigInt
+  //comment     comments[]
 }
 
-model PostInterest {
+model postInterest {
   collectId BigInt @unique @default(autoincrement())
   userId BigInt
   postId BigInt
 }
 
-model Activity {
+model activity {
   activityId      BigInt    @unique @default(autoincrement())
   userId          BigInt
   activityName    String?   @db.VarChar(300)
@@ -55,10 +55,12 @@ model Activity {
   certification   Boolean   @db.Bit(1)
 }
 
-model Inquiry {
-  inquiryId      BigInt    @unique @default(autoincrement())
-  userId         BigInt
-  inquiryTitle   String?   @db.VarChar(200)
-  inquiryContent String    @db.VarChar(500)
-  publishDate    DateTime  @default(now())
+model comments {
+  commentId   BigInt   @id @default(autoincrement())
+  //user        users?   @relation(fields: [userId], references: [userId])
+  userId      BigInt?
+  //post        posts?   @relation(fields: [postId], references: [postId])
+  postId      BigInt?
+  content     String?  @db.VarChar(500)
+  commentDate DateTime @default(now())
 }
