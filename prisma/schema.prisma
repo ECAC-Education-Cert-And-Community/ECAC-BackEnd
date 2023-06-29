@@ -13,12 +13,9 @@ datasource db {
 model users {
   userId           BigInt    @id @default(autoincrement())
   userName         String    @db.VarChar(10)
-  department       String    @db.VarChar(20)
-  userNick         String?   @db.VarChar(10)
   userEmail        String    @unique @db.VarChar(50)
   userPW           String    @db.VarChar(100)
   userPhoneNum     String    @db.VarChar(12)
-  profileImagePath String?   @db.VarChar(200)
   userRole         Boolean   @db.Bit(1)
   activityNum      BigInt?
   serviceAgree     Boolean   @db.Bit(1)

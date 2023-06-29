@@ -27,12 +27,9 @@ router.post('/register', async (req, res) => {
         // 파라미터 받아오기
         // const userId = req.body.userId;
         const userName = req.body.userName;
-        const department = req.body.department;
-        const userNick = req.body.userNick;
         const userEmail = req.body.userEmail;
         const userPW = await bcrypt.hash(req.body.userPW, 10);  // 10은 saltOrRounds 기본 횟수
         const userPhoneNum = req.body.userPhoneNum;
-        const profileImagePath = req.body.profileImagePath;
         const userRole = req.body.userRole;
         const activityNum = 0;
         const serviceAgree = req.body.serviceAgree;
@@ -55,12 +52,9 @@ router.post('/register', async (req, res) => {
                 await prisma.users.create({
                     data: {
                         userName: userName,
-                        department: department,
-                        userNick: userNick,
                         userEmail: userEmail,
                         userPW: userPW,
                         userPhoneNum: userPhoneNum,
-                        profileImagePath: profileImagePath,
                         userRole: userRole,
                         activityNum: activityNum,
                         serviceAgree: serviceAgree,
@@ -114,22 +108,15 @@ router.put('/edit', async (req, res) => {
         // 파라미터 받아오기
         const userId = req.body.userId; // 자동으로 받아오는 것으로 수정 필요
         const userName = req.body.userName;
-        const department = req.body.department;
-        const userNick = req.body.userNick;
         const userPhoneNum = req.body.userPhoneNum;
-        const profileImagePath = req.body.profileImagePath;
         const update = req.body.update;
-
         const user = await prisma.users.update({
             where: {
                 userId: userId
             },
             data: {
                 userName: userName,
-                department: department,
-                userNick: userNick,
                 userPhoneNum: userPhoneNum,
-                profileImagePath: profileImagePath,
                 update: update
             }
         })
